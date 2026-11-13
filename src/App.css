@@ -1055,6 +1055,7 @@ a {
   }
 
   .mobile-nav-panel {
+    display: block;
     position: fixed;
     top: 82px;
     right: 12px;
@@ -1068,6 +1069,7 @@ a {
     backdrop-filter: blur(16px);
     opacity: 0;
     visibility: hidden;
+    pointer-events: none;
     transform: translateX(120%);
     transition: transform 0.25s ease, opacity 0.25s ease, visibility 0.25s ease;
   }
@@ -1081,6 +1083,7 @@ a {
   .mobile-nav-panel.open {
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
     transform: translateX(0);
   }
 
