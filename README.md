@@ -17,7 +17,7 @@ Every push to `main` builds and deploys through `.github/workflows/deploy.yml`.
 
 ## Dynamic feature: contact dispatch form
 
-The `#contact` section has a working contact form. It sends a JSON `POST` to a free-tier form relay (FormSubmit.co), which emails the message to my inbox. The visitor then sees a delivery receipt, and a collapsible panel shows the exact request and response.
+The `#contact` section has a working contact form. It sends a JSON `POST` to a free-tier form relay (FormSubmit.co), which emails the message to my inbox. The visitor then sees a "Message sent successfully" confirmation.
 
 - Plain-words explainer, data-flow diagram and test checklist: [`docs/MAKE_IT_DO_SOMETHING.md`](docs/MAKE_IT_DO_SOMETHING.md)
 - Optional: set `VITE_WEB3FORMS_ACCESS_KEY` at build time (for example in `.env.local`) to send through Web3Forms instead of FormSubmit.
@@ -40,7 +40,7 @@ The `#contact` section has a working contact form. It sends a JSON `POST` to a f
 | `src/components/Skills.jsx` | Skills section |
 | `src/components/Testimonials.jsx` | Testimonials |
 | `src/components/Contact.jsx` | Contact section copy; mounts the dispatch form |
-| `src/components/ContactDispatchForm.jsx` | **Live contact form:** validation, honeypot, request ID, double-submit lock, HTTPS `POST` to FormSubmit.co / Web3Forms, delivery receipt and telemetry panel |
+| `src/components/ContactDispatchForm.tsx` | **Live contact form:** validation, honeypot spam trap, double-submit lock, HTTPS `POST` to FormSubmit.co / Web3Forms, success message |
 | `src/assets/` | Project diagrams and photos |
 | `public/` | Favicon and icons, copied as-is |
 | `docs/MAKE_IT_DO_SOMETHING.md` | Explainer for the contact form (FlyRank "Make It Do Something") |
