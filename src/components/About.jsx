@@ -1,4 +1,4 @@
-import lenlenImage from '../assets/lenlen.jpg'
+import lenlenPortrait from '../assets/optimized/lenlen-portrait.webp'
 
 export default function About() {
   return (
@@ -11,7 +11,14 @@ export default function About() {
       <div className="about-stack">
         <div className="about-visual">
           <div className="portrait-frame">
-            <img src={lenlenImage} alt="Lenon Adriano portrait" />
+            <img
+              src={lenlenPortrait}
+              alt="Lenon Adriano portrait"
+              width="800"
+              height="814"
+              loading="lazy"
+              decoding="async"
+            />
           </div>
 
           <ul className="feature-list">

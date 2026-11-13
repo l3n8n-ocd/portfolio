@@ -1170,7 +1170,9 @@ a {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transform: translateX(120%);
+    /* Closed state stays inside the viewport: an off-screen translateX(120%)
+       added 300px of horizontal scroll on phones and tablets. */
+    transform: translateY(-8px);
     transition: transform 0.25s ease, opacity 0.25s ease, visibility 0.25s ease;
   }
 
@@ -1271,59 +1273,6 @@ a {
   .feature-list {
     grid-template-columns: 1fr;
   }
-}
-
-@media (max-width: 580px) {
-  .section {
-    width: min(100% - 20px, 1200px);
-  }
-
-  .hero-stats {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .primary-button,
-  .secondary-button {
-    width: 100%;
-  }
-
-  .feature-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .feature-list li {
-    min-height: 72px;
-    padding-left: 38px;
-  }
-
-  .footer-inner {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
-@media (max-width: 420px) {
-  .brand-mark {
-    width: 30px;
-    height: 30px;
-  }
-
-  .brand-text {
-    font-size: 0.75rem;
-  }
-
-  .brand-text small {
-    font-size: 0.48rem;
-  }
-
-  .feature-list {
-    grid-template-columns: 1fr;
-  }
 
   .gooey-nav-list {
     width: min(200px, 100%);
@@ -1335,4 +1284,146 @@ a {
     padding: 0.7em 0.8em;
     font-size: 0.72rem;
   }
+}
+
+/* ------------------------------------------------------------------
+   Open It on Your Phone: mobile, touch-target, readability and contrast
+   fixes. Each rule maps to a row in docs/OPEN_IT_ON_YOUR_PHONE.md.
+   ------------------------------------------------------------------ */
+
+/* Fix 2: guardrail against sideways scroll. `clip` (not `hidden`) so the
+   sticky top bar keeps working. */
+.portfolio-page {
+  overflow-x: clip;
+}
+
+.contact-meta span,
+.footer-inner span {
+  overflow-wrap: anywhere;
+}
+
+/* Fix 1: 44x44px minimum touch targets everywhere. */
+.primary-button,
+.secondary-button,
+.project-link-button,
+.theme-toggle {
+  min-height: 44px;
+}
+
+.theme-toggle {
+  min-width: 44px;
+}
+
+.desktop-nav-shell .gooey-nav-item a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+/* Fix 3: 16px inputs never trigger iOS Safari's focus zoom; 48px tall taps. */
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+  font-size: max(16px, 1rem);
+  min-height: 48px;
+}
+
+/* Fix 4: readability. Labels that were 7.7px-14px on phones. */
+.feature-list li {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.project-category {
+  font-size: 0.8rem;
+}
+
+/* Fix 4: contrast. White on the old lavender gradient end (#a78bfa) was
+   2.7:1; these stops give 5.7:1 to 7.1:1. */
+.primary-button {
+  background: linear-gradient(135deg, #6d28d9, #7c3aed);
+}
+
+/* Light mode: #8b5cf6 purple labels were 3.8:1 to 4.1:1 on the page;
+   #5b21b6 is 8.0:1. Muted body text #475569 (6.8:1) becomes #334155 (9.2:1). */
+.portfolio-page.theme-light {
+  --muted: #334155;
+}
+
+.theme-light .eyebrow,
+.theme-light .project-category,
+.theme-light .hero-copy h1 span,
+.theme-light .feature-list li::before {
+  color: #5b21b6;
+}
+
+@media (max-width: 960px) {
+  /* Fix 1: the menu button was squeezed to 20x40px by the full-width
+     "Hire Me" rule; it now keeps its 44px box. */
+  .mobile-menu-toggle {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+  }
+
+  .theme-toggle {
+    width: 52px;
+    height: 44px;
+    flex-shrink: 0;
+  }
+
+  .primary-button.small-button {
+    width: auto;
+    min-height: 44px;
+  }
+
+  .mobile-nav a {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+  }
+
+  .brand-text small {
+    font-size: 0.72rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .brand-text {
+    font-size: 0.85rem;
+  }
+
+  .brand-text small {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 960px) {
+  /* Fix 1: the open menu was see-through enough that hero text behind it
+     competed with the links. */
+  .mobile-nav-panel {
+    background: rgba(10, 15, 32, 0.97);
+  }
+
+  .theme-light .mobile-nav-panel {
+    background: rgba(255, 255, 255, 0.97);
+  }
+}
+
+/* Fix 1: the top bar's own backdrop-filter made it the containing block and
+   backdrop root for the fixed mobile menu, so hero text bled through the
+   open menu. The blur now lives on a pseudo-element behind the bar's
+   content; the bar looks the same. */
+.topbar {
+  backdrop-filter: none;
+}
+
+.topbar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import lenlenImage from '../assets/lenlen.jpg'
+import lenlenAvatar from '../assets/optimized/lenlen-avatar.webp'
 import GooeyNav from '../GooeyNav'
 
 const navItems = [
@@ -18,7 +18,7 @@ export default function Navbar({ theme, onToggleTheme }) {
     <header className="topbar">
       <div className="section topbar-inner">
         <div className="brand-block">
-          <img src={lenlenImage} alt="Lenon Adriano" className="brand-mark" />
+          <img src={lenlenAvatar} alt="Lenon Adriano" className="brand-mark" width="42" height="42" decoding="async" />
           <span className="brand-text">
             Lenon Adriano
             <small>Cloud | DevOps | Security Engineer</small>
@@ -53,8 +53,9 @@ export default function Navbar({ theme, onToggleTheme }) {
           <button
             type="button"
             className="mobile-menu-toggle"
-            aria-label="Toggle navigation menu"
+            aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-nav-panel"
             onClick={() => setMobileMenuOpen((open) => !open)}
           >
             <span />
@@ -68,7 +69,7 @@ export default function Navbar({ theme, onToggleTheme }) {
         </div>
       </div>
 
-      <div className={`mobile-nav-panel ${mobileMenuOpen ? 'open' : ''}`}>
+      <div id="mobile-nav-panel" className={`mobile-nav-panel ${mobileMenuOpen ? 'open' : ''}`}>
         <nav className="mobile-nav" aria-label="Mobile navigation">
           {navItems.map((item) => (
             <a key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)}>

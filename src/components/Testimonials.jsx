@@ -1,6 +1,6 @@
-import celvsImage from '../assets/celvs.jpg'
-import ryleeImage from '../assets/rylee.jpg'
-import nardImage from '../assets/nard.jpg'
+import celvsImage from '../assets/optimized/celvs.webp'
+import ryleeImage from '../assets/optimized/rylee.webp'
+import nardImage from '../assets/optimized/nard.webp'
 
 const testimonials = [
   {
@@ -39,7 +39,15 @@ export default function Testimonials() {
           <article key={person.name} className="testimonial-card">
             <p className="quote">“{person.quote}”</p>
             <div className="person-details">
-              <img className="avatar" src={person.image} alt={`${person.name} portrait`} />
+              <img
+                className="avatar"
+                src={person.image}
+                alt={`${person.name} portrait`}
+                width="44"
+                height="44"
+                loading="lazy"
+                decoding="async"
+              />
               <div>
                 <strong>{person.name}</strong>
                 <span>{person.role}</span>
