@@ -1,5 +1,4 @@
-/// <reference types="vite/client" />
-import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 /*
  * ContactDispatchForm: the portfolio's one dynamic feature.
@@ -12,59 +11,24 @@ import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'r
  */
 
 const RECIPIENT = 'ladriano0209@gmail.com'
-const SUBJECT = '[Portfolio Dispatch] New Walkthrough Request'
-const FORMSUBMIT_ENDPOINT = `https://formsubmit.co/ajax/${RECIPIENT}`
+// FormSubmit alias for RECIPIENT (from the activation email), so the address isn't in the request URL.
+const FORMSUBMIT_ALIAS = 'cae75c4e129755785e3fe37c2f283c55'
+const FORMSUBMIT_ENDPOINT = `https://formsubmit.co/ajax/${FORMSUBMIT_ALIAS}`
 const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit'
-const WEB3FORMS_ACCESS_KEY = (import.meta.env.VITE_WEB3FORMS_ACCESS_KEY as string | undefined)?.trim() || ''
-const REQUEST_TIMEOUT_MS = 20_000
+const WEB3FORMS_ACCESS_KEY = (import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || '').trim()
+const SUBJECT_PREFIX = '[Portfolio Dispatch] New Walkthrough Request'
+const REQUEST_TIMEOUT_MS = 45_000
 
 const TOPICS = [
   'MicroCredit API State Machine & Ledger',
   'Node2Shell CVE-2026-111497 Research',
   'Cloud Security & DevSecOps Internship/Role',
   'General Inquiry',
-] as const
+]
 
-type Topic = (typeof TOPICS)[number]
-type Status = 'idle' | 'submitting' | 'succeeded' | 'error'
-type Provider = 'FormSubmit.co' | 'Web3Forms'
-
-interface FormFields {
-  name: string
-  email: string
-  walkthroughTopic: Topic | ''
-  message: string
-  _honey: string
-}
-
-type FieldName = 'name' | 'email' | 'walkthroughTopic' | 'message'
-type FieldErrors = Partial<Record<FieldName, string>>
-
-interface Telemetry {
-  provider: Provider
-  method: 'POST'
-  endpoint: string
-  requestHeaders: Record<string, string>
-  payload: Record<string, unknown>
-  requestId: string
-  sentAtUtc: string
-  durationMs: number
-  httpStatus: number | null
-  httpStatusText: string
-  responseBody: unknown
-}
-
-interface Receipt {
-  requestId: string
-  deliveredAtUtc: string
-  name: string
-  email: string
-  topic: Topic
-}
-
-const EMPTY_FIELDS: FormFields = { name: '', email: '', walkthroughTopic: '', message: '', _honey: '' }
+const EMPTY_FIELDS = { name: '', email: '', walkthroughTopic: '', message: '', _honey: '' }
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const STATUS_TEXT: Record<number, string> = {
+const STATUS_TEXT = {
   200: 'OK',
   201: 'Created',
   400: 'Bad Request',
@@ -75,8 +39,8 @@ const STATUS_TEXT: Record<number, string> = {
   503: 'Service Unavailable',
 }
 
-function validate(fields: FormFields): FieldErrors {
-  const errors: FieldErrors = {}
+function validate(fields) {
+  const errors = {}
   const name = fields.name.trim()
   const email = fields.email.trim()
   const message = fields.message.trim()
@@ -97,7 +61,7 @@ function validate(fields: FormFields): FieldErrors {
 }
 
 /* Same fields in, same key out: it identifies one message, not one click. */
-async function deriveRequestId(fields: FormFields): Promise<string> {
+async function deriveRequestId(fields) {
   const canonical = [
     fields.name.trim(),
     fields.email.trim().toLowerCase(),
@@ -121,67 +85,71 @@ async function deriveRequestId(fields: FormFields): Promise<string> {
   return `req_${a.toString(16).padStart(8, '0')}${b.toString(16).padStart(8, '0')}`
 }
 
-function toUtcStamp(date: Date): string {
+function toUtcStamp(date) {
   return `${date.toISOString().slice(0, 19).replace('T', ' ')} UTC`
 }
 
-function buildRequest(fields: FormFields, requestId: string) {
-  const common = {
-    name: fields.name.trim(),
-    email: fields.email.trim(),
-    walkthroughTopic: fields.walkthroughTopic,
-    message: fields.message.trim(),
-    request_id: requestId,
+/*
+ * The email arrives as a table whose row labels are these keys, so they are
+ * written as the labels the recipient should read.
+ */
+function buildRequest(fields, requestId, submittedAtUtc) {
+  const name = fields.name.trim()
+  const email = fields.email.trim()
+  const subject = `${SUBJECT_PREFIX}: ${fields.walkthroughTopic} (${name})`
+  const emailRows = {
+    'Name / Organization': name,
+    'Reply-To Email': email,
+    'Walkthrough Topic': fields.walkthroughTopic,
+    'Message / Preferred Time Window': fields.message.trim(),
+    'Submitted (UTC)': submittedAtUtc,
+    'Request ID': requestId,
+    'Sent From': window.location.href.split('#')[0],
   }
 
   if (WEB3FORMS_ACCESS_KEY) {
     return {
-      provider: 'Web3Forms' as Provider,
+      provider: 'Web3Forms',
       endpoint: WEB3FORMS_ENDPOINT,
-      body: { access_key: WEB3FORMS_ACCESS_KEY, subject: SUBJECT, from_name: 'Portfolio Dispatch', ...common },
+      body: { access_key: WEB3FORMS_ACCESS_KEY, subject, from_name: name, replyto: email, ...emailRows },
     }
   }
 
   return {
-    provider: 'FormSubmit.co' as Provider,
+    provider: 'FormSubmit.co',
     endpoint: FORMSUBMIT_ENDPOINT,
-    body: { ...common, _subject: SUBJECT, _replyto: common.email, _template: 'table', _honey: fields._honey },
+    body: { ...emailRows, _subject: subject, _replyto: email, _template: 'table', _captcha: 'false', _honey: fields._honey },
   }
 }
 
 /* What the telemetry drawer shows: no spam-trap field, access key masked. */
-function sanitizeForDisplay(body: Record<string, unknown>): Record<string, unknown> {
-  const { _honey: _ignored, ...rest } = body
-  void _ignored
+function sanitizeForDisplay(body) {
+  const rest = { ...body }
+  delete rest._honey
   if (typeof rest.access_key === 'string') {
     rest.access_key = `••••••••${rest.access_key.slice(-4)}`
   }
   return rest
 }
 
-function isRelaySuccess(body: unknown): boolean {
-  if (!body || typeof body !== 'object') return false
-  const flag = (body as { success?: unknown }).success
-  return flag === true || flag === 'true'
+function isRelaySuccess(body) {
+  return body?.success === true || body?.success === 'true'
 }
 
-function relayMessage(body: unknown): string {
-  if (body && typeof body === 'object' && typeof (body as { message?: unknown }).message === 'string') {
-    return (body as { message: string }).message
-  }
-  return ''
+function relayMessage(body) {
+  return typeof body?.message === 'string' ? body.message : ''
 }
 
 export default function ContactDispatchForm() {
-  const [fields, setFields] = useState<FormFields>(EMPTY_FIELDS)
-  const [errors, setErrors] = useState<FieldErrors>({})
-  const [status, setStatus] = useState<Status>('idle')
+  const [fields, setFields] = useState(EMPTY_FIELDS)
+  const [errors, setErrors] = useState({})
+  const [status, setStatus] = useState('idle') // 'idle' | 'submitting' | 'succeeded' | 'error'
   const [errorMessage, setErrorMessage] = useState('')
   const [requestId, setRequestId] = useState('')
-  const [receipt, setReceipt] = useState<Receipt | null>(null)
-  const [telemetry, setTelemetry] = useState<Telemetry | null>(null)
+  const [receipt, setReceipt] = useState(null)
+  const [telemetry, setTelemetry] = useState(null)
   const inFlight = useRef(false)
-  const delivered = useRef(new Set<string>())
+  const delivered = useRef(new Set())
 
   useEffect(() => {
     let cancelled = false
@@ -193,7 +161,7 @@ export default function ContactDispatchForm() {
     }
   }, [fields])
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (event) => {
     const { name, value } = event.target
     setFields((current) => ({ ...current, [name]: value }))
     setErrors((current) => ({ ...current, [name]: undefined }))
@@ -212,7 +180,7 @@ export default function ContactDispatchForm() {
     setTelemetry(null)
   }
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
     if (inFlight.current) return
 
@@ -241,14 +209,14 @@ export default function ContactDispatchForm() {
       return
     }
 
-    const request = buildRequest(fields, id)
-    const requestHeaders = { 'Content-Type': 'application/json', Accept: 'application/json' }
     const startedAt = new Date()
     const startedPerf = performance.now()
+    const request = buildRequest(fields, id, toUtcStamp(startedAt))
+    const requestHeaders = { 'Content-Type': 'application/json', Accept: 'application/json' }
     const controller = new AbortController()
     const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
 
-    const record = (httpStatus: number | null, httpStatusText: string, responseBody: unknown) =>
+    const record = (httpStatus, httpStatusText, responseBody) =>
       setTelemetry({
         provider: request.provider,
         method: 'POST',
@@ -272,7 +240,7 @@ export default function ContactDispatchForm() {
       })
 
       const raw = await response.text()
-      let body: unknown = raw
+      let body = raw
       try {
         body = raw ? JSON.parse(raw) : null
       } catch {
@@ -289,7 +257,7 @@ export default function ContactDispatchForm() {
           deliveredAtUtc: toUtcStamp(new Date()),
           name: fields.name.trim(),
           email: fields.email.trim(),
-          topic: fields.walkthroughTopic as Topic,
+          topic: fields.walkthroughTopic,
         })
         setStatus('succeeded')
         return
@@ -304,12 +272,12 @@ export default function ContactDispatchForm() {
           : `The relay did not accept the message (HTTP ${response.status}${statusText ? ` ${statusText}` : ''}).${detail ? ` ${detail}` : ''} You can also email ${RECIPIENT} directly.`,
       )
     } catch (error) {
-      const timedOut = error instanceof DOMException && error.name === 'AbortError'
+      const timedOut = error?.name === 'AbortError'
       record(null, timedOut ? 'Timed out' : 'Network error', String(error))
       setStatus('error')
       setErrorMessage(
         timedOut
-          ? `No response after ${REQUEST_TIMEOUT_MS / 1000} seconds. Please try again, or email ${RECIPIENT} directly.`
+          ? `The mail relay didn't answer within ${REQUEST_TIMEOUT_MS / 1000} seconds. Your message may still arrive, so please wait a few minutes before sending it again, or email ${RECIPIENT} directly.`
           : `The request could not reach the relay (network error or blocked request). Please try again, or email ${RECIPIENT} directly.`,
       )
     } finally {
@@ -454,7 +422,7 @@ export default function ContactDispatchForm() {
   )
 }
 
-function TelemetryDrawer({ telemetry, succeeded }: { telemetry: Telemetry; succeeded: boolean }) {
+function TelemetryDrawer({ telemetry, succeeded }) {
   const statusLine =
     telemetry.httpStatus === null ? telemetry.httpStatusText : `${telemetry.httpStatus} ${telemetry.httpStatusText}`.trim()
 

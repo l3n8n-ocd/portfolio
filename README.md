@@ -40,7 +40,7 @@ The `#contact` section has a working contact form. It sends a JSON `POST` to a f
 | `src/components/Skills.jsx` | Skills section |
 | `src/components/Testimonials.jsx` | Testimonials |
 | `src/components/Contact.jsx` | Contact section copy; mounts the dispatch form |
-| `src/components/ContactDispatchForm.tsx` | **Live contact form:** validation, honeypot, request ID, double-submit lock, HTTPS `POST` to FormSubmit.co / Web3Forms, delivery receipt and telemetry panel |
+| `src/components/ContactDispatchForm.jsx` | **Live contact form:** validation, honeypot, request ID, double-submit lock, HTTPS `POST` to FormSubmit.co / Web3Forms, delivery receipt and telemetry panel |
 | `src/assets/` | Project diagrams and photos |
 | `public/` | Favicon and icons, copied as-is |
 | `docs/MAKE_IT_DO_SOMETHING.md` | Explainer for the contact form (FlyRank "Make It Do Something") |

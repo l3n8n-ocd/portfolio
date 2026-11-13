@@ -2,7 +2,7 @@
 
 **Feature:** 15-Minute Technical Walkthrough & Direct Message Dispatch Form
 **Where it lives:** the `#contact` section of https://l3n8n-ocd.github.io/portfolio/
-**Code:** [`src/components/ContactDispatchForm.tsx`](../src/components/ContactDispatchForm.tsx), mounted in [`src/components/Contact.jsx`](../src/components/Contact.jsx)
+**Code:** [`src/components/ContactDispatchForm.jsx`](../src/components/ContactDispatchForm.jsx), mounted in [`src/components/Contact.jsx`](../src/components/Contact.jsx)
 **Cost:** $0 (GitHub Pages + FormSubmit.co free tier)
 
 ---
@@ -64,7 +64,7 @@ This is the one action my portfolio exists for: getting someone who's interested
  └────────────────────────┘   └──────────────────────────────┘
 ```
 
-### Where each part lives in `ContactDispatchForm.tsx`
+### Where each part lives in `ContactDispatchForm.jsx`
 
 | Part | What it does |
 | --- | --- |
@@ -72,8 +72,8 @@ This is the one action my portfolio exists for: getting someone who's interested
 | `_honey` field | Hidden spam trap. If it's filled, nothing is sent. |
 | `deriveRequestId()` | SHA-256 of the message contents, shortened to `req_` + 16 hex characters. Shown as the **X-Idempotency-Key** badge, sent as `request_id` in the body and included in the email. If the same message was already delivered in this visit, it isn't sent again. |
 | `status` | `'idle' \| 'submitting' \| 'succeeded' \| 'error'`. While `submitting`, the fields and button are disabled and the button reads "Dispatching over HTTPS...". A `useRef` lock also blocks a second submit before React re-renders. |
-| `buildRequest()` | Builds the JSON body: `_subject`, `_replyto`, `_template` and `_honey` for FormSubmit, or `access_key` and `subject` for Web3Forms. |
-| `fetch()` call | `POST` with `Content-Type: application/json` and `Accept: application/json`, plus a 20-second timeout. |
+| `buildRequest()` | Builds the JSON body. The keys are the row labels of the email table (Name / Organization, Reply-To Email, Walkthrough Topic, Message / Preferred Time Window, Submitted (UTC), Request ID, Sent From), so the email reads like a formal request. The subject includes the topic and sender, e.g. `[Portfolio Dispatch] New Walkthrough Request: General Inquiry (Jane Doe)`. FormSubmit also gets `_replyto`, `_template: table` and `_honey`; Web3Forms gets `access_key`, `from_name` and `replyto`. |
+| `fetch()` call | `POST` with `Content-Type: application/json` and `Accept: application/json`, plus a 45-second timeout. FormSubmit can be slow to answer, and a timeout doesn't mean the email wasn't sent. |
 | `isRelaySuccess()` | Counts it as delivered only if the HTTP status is 2xx **and** the JSON says `success: true`. FormSubmit can return `200` with `success: "false"`, for example before the form is activated. |
 | `TelemetryDrawer` | The collapsible "How This Data Just Flowed" panel: request line, headers, cleaned-up JSON body (honeypot removed, access key masked), response status, timing and response body. |
 
@@ -81,7 +81,7 @@ This is the one action my portfolio exists for: getting someone who's interested
 
 ### Configuration
 
-- **Default:** FormSubmit.co at `https://formsubmit.co/ajax/ladriano0209@gmail.com`. No setup beyond the one-time activation below.
+- **Default:** FormSubmit.co at `https://formsubmit.co/ajax/cae75c4e129755785e3fe37c2f283c55`. That string is the alias FormSubmit issued for my inbox in its activation email, so my address isn't in the request URL. It only works after the one-time activation below.
 - **Optional Web3Forms override:** set `VITE_WEB3FORMS_ACCESS_KEY` when building. Vite bakes it into the bundle, so it's public by design: Web3Forms access keys only allow sending to the address the key was created for. Locally, put it in `.env.local`. For the deployed site, the GitHub Actions build step has to receive it as an environment variable, which `.github/workflows/deploy.yml` doesn't do yet.
 
 ---
