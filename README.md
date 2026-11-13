@@ -1,16 +1,48 @@
-# React + Vite
+# Lenon Adriano: Developer Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Cloud | DevOps | Security portfolio built with React, Vite and Tailwind CSS, deployed to GitHub Pages.
 
-Currently, two official plugins are available:
+**Live:** https://l3n8n-ocd.github.io/portfolio/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Run locally
 
-## React Compiler
+```bash
+npm ci
+npm run dev       # http://localhost:5173/portfolio/
+npm run build     # production build in dist/
+npm run preview   # serve the production build
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Every push to `main` builds and deploys through `.github/workflows/deploy.yml`.
 
-## Expanding the ESLint configuration
+## Dynamic feature: contact dispatch form
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The `#contact` section has a working contact form. It sends a JSON `POST` to a free-tier form relay (FormSubmit.co), which emails the message to my inbox. The visitor then sees a delivery receipt, and a collapsible panel shows the exact request and response.
+
+- Plain-words explainer, data-flow diagram and test checklist: [`docs/MAKE_IT_DO_SOMETHING.md`](docs/MAKE_IT_DO_SOMETHING.md)
+- Optional: set `VITE_WEB3FORMS_ACCESS_KEY` at build time (for example in `.env.local`) to send through Web3Forms instead of FormSubmit.
+
+## Deployed file map
+
+| File | Purpose |
+| --- | --- |
+| `index.html` | HTML shell, page title, favicon |
+| `src/main.jsx` | React entry point |
+| `src/App.jsx` | Page layout, hero section, dark/light theme state |
+| `src/App.css` | Theme variables (dark default, light toggle) and all section styles |
+| `src/index.css` | Tailwind import and global resets |
+| `src/Scanner.jsx` | Animated WebGL background |
+| `src/GooeyNav.jsx`, `src/PillNav.jsx` | Navigation effects |
+| `src/LogoLoop.jsx` | Scrolling skills/logo strip |
+| `src/components/Navbar.jsx` | Top bar, mobile menu, theme toggle |
+| `src/components/About.jsx` | About section |
+| `src/components/Projects.jsx` | Project cards |
+| `src/components/Skills.jsx` | Skills section |
+| `src/components/Testimonials.jsx` | Testimonials |
+| `src/components/Contact.jsx` | Contact section copy; mounts the dispatch form |
+| `src/components/ContactDispatchForm.tsx` | **Live contact form:** validation, honeypot, request ID, double-submit lock, HTTPS `POST` to FormSubmit.co / Web3Forms, delivery receipt and telemetry panel |
+| `src/assets/` | Project diagrams and photos |
+| `public/` | Favicon and icons, copied as-is |
+| `docs/MAKE_IT_DO_SOMETHING.md` | Explainer for the contact form (FlyRank "Make It Do Something") |
+| `.github/workflows/deploy.yml` | Build and deploy to GitHub Pages |
+| `vite.config.js` | Vite config; `base: '/portfolio/'` for the Pages subpath |
