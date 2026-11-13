@@ -22,6 +22,10 @@ The `#contact` section has a working contact form. It sends a JSON `POST` to a f
 - Plain-words explainer, data-flow diagram and test checklist: [`docs/MAKE_IT_DO_SOMETHING.md`](docs/MAKE_IT_DO_SOMETHING.md)
 - Optional: set `VITE_WEB3FORMS_ACCESS_KEY` at build time (for example in `.env.local`) to send through Web3Forms instead of FormSubmit.
 
+## Design critique
+
+The hero and case studies were reworked after a peer review: one positioning line, a 10-second "try to pay a borrower twice" proof on the first screen, one primary call to action, and plain-English outcomes on each case card. Critique, sort and before/after: [`docs/SURVIVE_THE_CRIT.md`](docs/SURVIVE_THE_CRIT.md).
+
 ## Mobile check
 
 The site was tested at 320–1280 px in both themes: no sideways scroll, every tap target at least 44×44 px, 16 px form inputs, AA/AAA text contrast, and WebP images sized per screen. Before/after screenshots and the full fix log are in [`docs/OPEN_IT_ON_YOUR_PHONE.md`](docs/OPEN_IT_ON_YOUR_PHONE.md).
@@ -32,7 +36,7 @@ The site was tested at 320–1280 px in both themes: no sideways scroll, every t
 | --- | --- |
 | `index.html` | HTML shell, page title, favicon |
 | `src/main.jsx` | React entry point |
-| `src/App.jsx` | Page layout, hero section, dark/light theme state |
+| `src/App.jsx` | Page layout and dark/light theme state |
 | `src/App.css` | Theme variables (dark default, light toggle) and all section styles |
 | `src/index.css` | Tailwind import and global resets |
 | `src/Scanner.jsx` | Animated WebGL background |
@@ -40,7 +44,8 @@ The site was tested at 320–1280 px in both themes: no sideways scroll, every t
 | `src/LogoLoop.jsx` | Scrolling skills/logo strip |
 | `src/components/Navbar.jsx` | Top bar, mobile menu, theme toggle |
 | `src/components/About.jsx` | About section |
-| `src/components/Projects.jsx` | Project cards |
+| `src/components/Hero.tsx` | Hero: positioning, primary call to action, 10-second duplicate-payout proof |
+| `src/components/CapstoneAndProjects.tsx` | Case studies (MicroCredit API, Node2Shell, RoadWatch) and AWS lab links |
 | `src/components/Skills.jsx` | Skills section |
 | `src/components/Testimonials.jsx` | Testimonials |
 | `src/components/Contact.jsx` | Contact section copy; mounts the dispatch form |
@@ -49,6 +54,7 @@ The site was tested at 320–1280 px in both themes: no sideways scroll, every t
 | `src/assets/optimized/` | WebP versions sized for display (these are what the site loads) |
 | `public/` | Favicon and icons, copied as-is |
 | `docs/MAKE_IT_DO_SOMETHING.md` | Explainer for the contact form (FlyRank "Make It Do Something") |
+| `docs/SURVIVE_THE_CRIT.md` | Peer review, Must-Fix/Nice-to-Have sort and fixes, screenshots in `docs/assets/crit-audit/` (FlyRank "Survive the Crit") |
 | `docs/OPEN_IT_ON_YOUR_PHONE.md` | Mobile fix log with before/after screenshots in `docs/assets/mobile-audit/` (FlyRank "Open It on Your Phone") |
 | `.github/workflows/deploy.yml` | Build and deploy to GitHub Pages |
 | `vite.config.js` | Vite config; `base: '/portfolio/'` for the Pages subpath |

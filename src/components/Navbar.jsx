@@ -4,8 +4,8 @@ import GooeyNav from '../GooeyNav'
 
 const navItems = [
   { label: 'Home', href: '#home' },
-  { label: 'About', href: '#about' },
   { label: 'Projects', href: '#projects' },
+  { label: 'About', href: '#about' },
   { label: 'Skills', href: '#skills' },
   { label: 'Testimonials', href: '#testimonials' },
   { label: 'Contact', href: '#contact' },
@@ -63,8 +63,9 @@ export default function Navbar({ theme, onToggleTheme }) {
             <span />
           </button>
 
-          <a href="#contact" className="primary-button small-button">
-            Hire Me
+          <a href="#contact" className="cta-primary small-button" aria-label="Book a 15-minute walkthrough">
+            <span className="cta-long" aria-hidden="true">Book 15 min</span>
+            <span className="cta-short" aria-hidden="true">Book</span>
           </a>
         </div>
       </div>
