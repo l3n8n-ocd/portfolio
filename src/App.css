@@ -1136,9 +1136,18 @@ a {
   font-size: 0.88rem;
 }
 
-.dispatch-steps li.is-pending {
+.dispatch-steps li.is-failed {
   opacity: 0.5;
   text-decoration: line-through;
+}
+
+.dispatch-steps li.is-unknown {
+  color: #fbbf24;
+  font-style: italic;
+}
+
+.theme-light .dispatch-steps li.is-unknown {
+  color: #b45309;
 }
 
 .dispatch-wire {

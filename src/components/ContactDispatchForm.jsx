@@ -426,13 +426,28 @@ function TelemetryDrawer({ telemetry, succeeded }) {
   const statusLine =
     telemetry.httpStatus === null ? telemetry.httpStatusText : `${telemetry.httpStatus} ${telemetry.httpStatusText}`.trim()
 
+  // No reply at all (timeout or network error): the relay may still have sent
+  // the email, so delivery is unknown. A reply that rejected it means it failed.
+  const noReply = telemetry.httpStatus === null
+  const deliveryState = succeeded ? undefined : noReply ? 'is-unknown' : 'is-failed'
+
   const steps = [
-    'Browser form state: React held the four fields in component state.',
-    'Validation: required fields, email format and the spam-trap field checked in the browser.',
-    `JSON serialization: fields packed into a JSON body tagged ${telemetry.requestId}.`,
-    `HTTPS POST: sent to ${telemetry.provider}, a free-tier form relay running on its own server.`,
-    `SMTP delivery: the relay emails the message to ${RECIPIENT}.`,
-    `JSON response: the relay answered ${statusLine} in ${telemetry.durationMs} ms and the UI updated.`,
+    ['Browser form state: React held the four fields in component state.'],
+    ['Validation: required fields, email format and the spam-trap field checked in the browser.'],
+    [`JSON serialization: fields packed into a JSON body tagged ${telemetry.requestId}.`],
+    [`HTTPS POST: sent to ${telemetry.provider}, a free-tier form relay running on its own server.`],
+    [
+      noReply
+        ? `SMTP delivery: unknown. The relay may still email the message to ${RECIPIENT}.`
+        : `SMTP delivery: the relay emails the message to ${RECIPIENT}.`,
+      deliveryState,
+    ],
+    [
+      noReply
+        ? `JSON response: none received (${statusLine} after ${telemetry.durationMs} ms).`
+        : `JSON response: the relay answered ${statusLine} in ${telemetry.durationMs} ms and the UI updated.`,
+      noReply ? 'is-failed' : undefined,
+    ],
   ]
 
   return (
@@ -440,8 +455,8 @@ function TelemetryDrawer({ telemetry, succeeded }) {
       <summary>How This Data Just Flowed (Frontend → Backend → Inbox)</summary>
 
       <ol className="dispatch-steps">
-        {steps.map((step, index) => (
-          <li key={step} className={!succeeded && index >= 4 ? 'is-pending' : undefined}>
+        {steps.map(([step, className]) => (
+          <li key={step} className={className}>
             {step}
           </li>
         ))}
