@@ -19,7 +19,16 @@ export default function Contact() {
           and a time window in the form. It goes straight to my inbox.
         </p>
         <div className="contact-meta">
-          <span>Email: ladriano0209@gmail.com</span>
+          <span>
+            Also on{' '}
+            <a href="https://www.linkedin.com/in/cyberlens" target="_blank" rel="noopener noreferrer">
+              LinkedIn ↗
+            </a>{' '}
+            and{' '}
+            <a href="https://github.com/l3n8n-ocd" target="_blank" rel="noopener noreferrer">
+              GitHub ↗
+            </a>
+          </span>
           <span>Location: Remote / Hybrid</span>
         </div>
       </div>

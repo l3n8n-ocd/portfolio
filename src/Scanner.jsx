@@ -176,7 +176,9 @@ const Scanner = ({
       alpha: true,
       premultipliedAlpha: true,
       antialias: false,
-      dpr: Math.min(window.devicePixelRatio || 1, 2)
+      // Decorative, soft background: 1x is enough. At 2x every frame shades
+      // 4x the pixels, which is what made the page's main thread busy.
+      dpr: 1
     });
 
     const gl = renderer.gl;
@@ -263,8 +265,16 @@ const Scanner = ({
     let isVisible = true;
     let isPageVisible = !document.hidden;
     const t0 = performance.now();
+    // Draw at most ~30 frames a second, and only one still frame when the
+    // visitor's system asks for reduced motion.
+    const FRAME_INTERVAL_MS = 1000 / 30;
+    let lastFrame = 0;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     const loop = t => {
+      raf = requestAnimationFrame(loop);
+      if (t - lastFrame < FRAME_INTERVAL_MS) return;
+      lastFrame = t;
       program.uniforms.iTime.value = (t - t0) * 0.001;
 
       if (!mouseEnabledRef.current) {
@@ -278,11 +288,10 @@ const Scanner = ({
       program.uniforms.uMouseActive.value = mouseActive;
 
       renderer.render({ scene: mesh });
-      raf = requestAnimationFrame(loop);
     };
 
     const tryStart = () => {
-      if (isVisible && isPageVisible && raf === 0) raf = requestAnimationFrame(loop);
+      if (isVisible && isPageVisible && !reducedMotion.matches && raf === 0) raf = requestAnimationFrame(loop);
     };
     const tryStop = () => {
       if (raf !== 0) {
@@ -306,6 +315,9 @@ const Scanner = ({
     };
     document.addEventListener('visibilitychange', onVisibility);
 
+    const onMotionPreference = () => (reducedMotion.matches ? tryStop() : tryStart());
+    reducedMotion.addEventListener('change', onMotionPreference);
+
     tryStart();
 
     return () => {
@@ -313,6 +325,7 @@ const Scanner = ({
       ro.disconnect();
       io.disconnect();
       document.removeEventListener('visibilitychange', onVisibility);
+      reducedMotion.removeEventListener('change', onMotionPreference);
       canvas.removeEventListener('mousemove', onMouseMove);
       canvas.removeEventListener('mouseleave', onMouseLeave);
       ctxMap.delete(container);
@@ -368,6 +381,10 @@ const Scanner = ({
     u.uColor3.value[2] = c3[2];
 
     mouseEnabledRef.current = mouseInteraction;
+
+    // Draw one frame with the new settings, so the still frame shown under
+    // prefers-reduced-motion (no animation loop) uses the real colours.
+    ctx.renderer.render({ scene: ctx.mesh });
   }, [
     speed,
     sweepSpeed,

@@ -1871,3 +1871,86 @@ a {
     display: inline;
   }
 }
+
+/* ------------------------------------------------------------------
+   Break Your Own Site: form limits and the blocked-relay fallback.
+   See docs/BREAK_YOUR_OWN_SITE.md.
+   ------------------------------------------------------------------ */
+
+.dispatch-count {
+  justify-self: end;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.dispatch-count.is-limit {
+  color: var(--blocked-text);
+  font-weight: 700;
+}
+
+.dispatch-recovery {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(148, 163, 184, 0.06);
+}
+
+.dispatch-recovery p {
+  margin: 0;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.dispatch-recovery .dispatch-recovery-title {
+  color: var(--text);
+  font-weight: 800;
+}
+
+.contact-form .dispatch-recovery-text {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: max(16px, 1rem);
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.dispatch-recovery-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 18px;
+}
+
+.dispatch-recovery-actions .secondary-button {
+  width: auto;
+  cursor: pointer;
+}
+
+.dispatch-recovery-actions a,
+.contact-meta a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--text);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.dispatch-recovery-status:empty {
+  display: none;
+}
+
+/* 320-360 px phones: the subtitle pushed the name into four lines and the
+   header to 104 px tall. Keep the name; the hero says the rest. */
+@media (max-width: 360px) {
+  .brand-text small {
+    display: none;
+  }
+
+  .topbar-inner {
+    gap: 8px;
+  }
+}

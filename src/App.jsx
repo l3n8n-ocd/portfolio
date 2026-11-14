@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import './App.css'
 import Scanner from './Scanner'
 import Navbar from './components/Navbar'
@@ -8,15 +7,12 @@ import CapstoneAndProjects from './components/CapstoneAndProjects'
 import Skills from './components/Skills'
 import Testimonials from './components/Testimonials'
 import Contact from './components/Contact'
+import { useTheme } from './hooks/useTheme'
+import { useHashScrollOnLoad } from './hooks/useHashScrollOnLoad'
 
 function App() {
-  const [theme, setTheme] = useState(() => localStorage.getItem('portfolio-theme') || 'dark')
-
-  useEffect(() => {
-    document.body.style.background = theme === 'dark' ? '#050816' : '#edf2ff'
-    document.body.style.color = theme === 'dark' ? '#e2e8f0' : '#0f172a'
-    localStorage.setItem('portfolio-theme', theme)
-  }, [theme])
+  const { theme, toggleTheme } = useTheme()
+  useHashScrollOnLoad()
 
   return (
     <div className={`portfolio-page theme-${theme}`}>
@@ -51,7 +47,7 @@ function App() {
       </div>
 
       <div className="content-shell">
-        <Navbar theme={theme} onToggleTheme={() => setTheme((current) => (current === 'dark' ? 'light' : 'dark'))} />
+        <Navbar theme={theme} onToggleTheme={toggleTheme} />
 
         <main>
           <Hero />

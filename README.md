@@ -34,6 +34,10 @@ A new case study is a short job, not a rebuild:
 - [`CLAUDE.md`](CLAUDE.md) holds the build context: where `CASES` lives, the three-beat shape, the Voice Card, the theme tokens and a 6-line prompt.
 - [`docs/reminders/add-next-case-study.ics`](docs/reminders/add-next-case-study.ics) is the calendar reminder: Sunday, Nov 29, 2026, 8:00 PM PHT, then the last Sunday of every month.
 
+## Break-it audit
+
+The site was tested against bad input, double-submits, a blocked or silent form relay, blocked storage, a 320 px phone and broken links, then given search and link-preview tags. Fixes, known limitations, Lighthouse numbers and evidence: [`docs/BREAK_YOUR_OWN_SITE.md`](docs/BREAK_YOUR_OWN_SITE.md).
+
 ## Mobile check
 
 The site was tested at 320–1280 px in both themes: no sideways scroll, every tap target at least 44×44 px, 16 px form inputs, AA/AAA text contrast, and WebP images sized per screen. Before/after screenshots and the full fix log are in [`docs/OPEN_IT_ON_YOUR_PHONE.md`](docs/OPEN_IT_ON_YOUR_PHONE.md).
@@ -42,9 +46,11 @@ The site was tested at 320–1280 px in both themes: no sideways scroll, every t
 
 | File | Purpose |
 | --- | --- |
-| `index.html` | HTML shell, page title, favicon |
+| `index.html` | HTML shell: title, description, canonical, Open Graph / Twitter Card tags, JSON-LD `Person` |
 | `src/main.jsx` | React entry point |
-| `src/App.jsx` | Page layout and dark/light theme state |
+| `src/App.jsx` | Page layout |
+| `src/hooks/useTheme.ts` | Dark/light theme, remembered in `localStorage` when the browser allows it |
+| `src/hooks/useHashScrollOnLoad.ts` | Scrolls to `#section` links once the page has rendered |
 | `src/App.css` | Theme variables (dark default, light toggle) and all section styles |
 | `src/index.css` | Tailwind import and global resets |
 | `src/Scanner.jsx` | Animated WebGL background |
@@ -60,8 +66,9 @@ The site was tested at 320–1280 px in both themes: no sideways scroll, every t
 | `src/components/ContactDispatchForm.tsx` | **Live contact form:** validation, honeypot spam trap, double-submit lock, HTTPS `POST` to FormSubmit.co / Web3Forms, success message |
 | `src/assets/` | Original project diagrams and photos |
 | `src/assets/optimized/` | WebP versions sized for display (these are what the site loads) |
-| `public/` | Favicon and icons, copied as-is |
+| `public/` | Favicon, icons, `og-preview.png` (1200×630 link preview), `robots.txt`, `sitemap.xml` |
 | `docs/MAKE_IT_DO_SOMETHING.md` | Explainer for the contact form (FlyRank "Make It Do Something") |
+| `docs/BREAK_YOUR_OWN_SITE.md` | Break-it audit: edge cases, fixes, known limitations, speed and SEO, evidence in `docs/assets/hardening-audit/` (FlyRank "Break Your Own Site") |
 | `docs/SURVIVE_THE_CRIT.md` | Peer review, Must-Fix/Nice-to-Have sort and fixes, screenshots in `docs/assets/crit-audit/` (FlyRank "Survive the Crit") |
 | `docs/OPEN_IT_ON_YOUR_PHONE.md` | Mobile fix log with before/after screenshots in `docs/assets/mobile-audit/` (FlyRank "Open It on Your Phone") |
 | `CLAUDE.md` | Build context for Claude: case study location and shape, Voice Card, theme tokens, the 6-line next-case prompt |
