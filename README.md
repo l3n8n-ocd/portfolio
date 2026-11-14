@@ -26,6 +26,14 @@ The `#contact` section has a working contact form. It sends a JSON `POST` to a f
 
 The hero and case studies were reworked after a peer review: one positioning line, a 10-second "try to pay a borrower twice" proof on the first screen, one primary call to action, and plain-English outcomes on each case card. Critique, sort and before/after: [`docs/SURVIVE_THE_CRIT.md`](docs/SURVIVE_THE_CRIT.md).
 
+## Keep the habit: the next case study
+
+A new case study is a short job, not a rebuild:
+
+- [`docs/FL-CAP_KEEP_THE_HABIT.md`](docs/FL-CAP_KEEP_THE_HABIT.md) has the 4-step runbook and the named next case: Case 04, SentinelScout, with its three beats drafted.
+- [`CLAUDE.md`](CLAUDE.md) holds the build context: where `CASES` lives, the three-beat shape, the Voice Card, the theme tokens and a 6-line prompt.
+- [`docs/reminders/add-next-case-study.ics`](docs/reminders/add-next-case-study.ics) is the calendar reminder: Sunday, Nov 29, 2026, 8:00 PM PHT, then the last Sunday of every month.
+
 ## Mobile check
 
 The site was tested at 320–1280 px in both themes: no sideways scroll, every tap target at least 44×44 px, 16 px form inputs, AA/AAA text contrast, and WebP images sized per screen. Before/after screenshots and the full fix log are in [`docs/OPEN_IT_ON_YOUR_PHONE.md`](docs/OPEN_IT_ON_YOUR_PHONE.md).
@@ -56,5 +64,8 @@ The site was tested at 320–1280 px in both themes: no sideways scroll, every t
 | `docs/MAKE_IT_DO_SOMETHING.md` | Explainer for the contact form (FlyRank "Make It Do Something") |
 | `docs/SURVIVE_THE_CRIT.md` | Peer review, Must-Fix/Nice-to-Have sort and fixes, screenshots in `docs/assets/crit-audit/` (FlyRank "Survive the Crit") |
 | `docs/OPEN_IT_ON_YOUR_PHONE.md` | Mobile fix log with before/after screenshots in `docs/assets/mobile-audit/` (FlyRank "Open It on Your Phone") |
+| `CLAUDE.md` | Build context for Claude: case study location and shape, Voice Card, theme tokens, the 6-line next-case prompt |
+| `docs/FL-CAP_KEEP_THE_HABIT.md` | Runbook for adding the next case, Case 04 (SentinelScout) drafted, reminder details (FlyRank "Keep the Habit") |
+| `docs/reminders/add-next-case-study.ics` | Monthly calendar reminder (last Sunday, 8:00 PM PHT) to ship the next case study |
 | `.github/workflows/deploy.yml` | Build and deploy to GitHub Pages |
 | `vite.config.js` | Vite config; `base: '/portfolio/'` for the Pages subpath |

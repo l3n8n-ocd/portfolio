@@ -1,0 +1,47 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//l3n8n-ocd//portfolio keep-the-habit//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Portfolio Habit
+X-WR-TIMEZONE:Asia/Manila
+BEGIN:VTIMEZONE
+TZID:Asia/Manila
+X-LIC-LOCATION:Asia/Manila
+BEGIN:STANDARD
+TZOFFSETFROM:+0800
+TZOFFSETTO:+0800
+TZNAME:PHT
+DTSTART:19700101T000000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:add-next-case-study-20261129@l3n8n-ocd.github.io
+DTSTAMP:20261114T000000Z
+SUMMARY:Portfolio Habit: Ship Next 3-Beat Case Study (Case 04: SentinelScou
+ t MCP Agent)
+DTSTART;TZID=Asia/Manila:20261129T200000
+DTEND;TZID=Asia/Manila:20261129T210000
+RRULE:FREQ=MONTHLY;BYDAY=-1SU
+DESCRIPTION:Monthly habit: add the next case study in the Week 2 three-beat
+  shape.\nNext up: Case 04 SentinelScout (FL-06 / FL-07). Queued: Case 05 A
+ WS IAM\, VPC and KMS labs.\n1. Capture 1 real artifact (terminal or UI\, u
+ nder 50 KB) into public/assets/cases/.\n2. Paste raw notes plus the 6-line
+  prompt from CLAUDE.md into Claude.\n3. Slot the card into CASES in src/co
+ mponents/CapstoneAndProjects.tsx. MicroCredit API stays 01.\n4. npm run bu
+ ild\, check 375 px for sideways scroll\, git push origin main.\nRunbook: h
+ ttps://github.com/l3n8n-ocd/portfolio/blob/main/docs/FL-CAP_KEEP_THE_HABIT
+ .md
+URL:https://github.com/l3n8n-ocd/portfolio/blob/main/docs/FL-CAP_KEEP_THE_H
+ ABIT.md
+CATEGORIES:Portfolio,Habit
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT30M
+DESCRIPTION:In 30 minutes: ship the next 3-beat case study (Case 04: Sentin
+ elScout).
+END:VALARM
+END:VEVENT
+END:VCALENDAR
