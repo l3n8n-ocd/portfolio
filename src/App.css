@@ -1957,8 +1957,8 @@ a {
 
 /*
  * Plant Your Flag: the FlyRank credential and the privacy-safe analytics readout in the footer.
- * The badge keeps its own #051F21 / #54E399 colours (it is the credential's artwork); everything
- * around it uses the theme tokens, so it reads in dark and light.
+ * The badge is FlyRank's own embed and styles itself inline (#051F21 / #54E399). Everything around
+ * it uses the theme tokens, so it reads in dark and light.
  */
 .footer-credential {
   display: flex;
@@ -1969,27 +1969,23 @@ a {
   padding: 26px 0 8px;
 }
 
-.credential-link {
-  display: inline-flex;
+.credential {
+  display: flex;
   align-items: center;
   gap: 18px;
   color: var(--text);
-  text-decoration: none;
-  border-radius: 14px;
-  padding: 6px;
 }
 
-.credential-link:focus-visible {
+/* FlyRank's badge link: a visible focus ring, round like the badge. */
+.credential > a {
+  flex: none;
+  border-radius: 50%;
+}
+
+.credential > a:focus-visible,
+.credential-verify:focus-visible {
   outline: 2px solid var(--emerald-text);
   outline-offset: 4px;
-}
-
-.flyrank-badge {
-  flex: none;
-  width: 164px;
-  height: 164px;
-  border-radius: 50%;
-  box-shadow: 0 10px 28px rgba(5, 31, 33, 0.45);
 }
 
 .credential-caption {
@@ -2022,9 +2018,10 @@ a {
   align-items: center;
   color: var(--emerald-text);
   font-weight: 600;
+  text-decoration: none;
 }
 
-.credential-link:hover .credential-verify {
+.credential-verify:hover {
   border-color: var(--emerald-text);
 }
 
@@ -2087,7 +2084,7 @@ a {
     text-align: center;
   }
 
-  .credential-link {
+  .credential {
     flex-direction: column;
   }
 

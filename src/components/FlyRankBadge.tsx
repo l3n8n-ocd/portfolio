@@ -1,63 +1,79 @@
 /*
- * FlyRankBadge: the FlyRank AI Internship graduate badge, 164×164, as inline SVG.
+ * FlyRankBadge: FlyRank's own embed for the AI Internship credential FR-D11-7F2E2-34A8A.
  *
- * Built from the brief's spec: a #051F21 circle with #54E399 rings and text, reading
- * "FlyRank AI Internship · July 2026 Cohort · Verified · Front-end AI Engineering" and the
- * credential ID. FlyRank's public verifier page does not publish badge artwork to copy, so this
- * is not the official file. To use FlyRank's own SVG, replace the <svg> below with it, keeping
- * the camelCase JSX attributes (strokeWidth, textAnchor, fontFamily, fontSize, fontWeight,
- * letterSpacing).
- *
- * The badge is decorative inside its link: the <a> in Footer.tsx carries the accessible name.
- * The credential itself is checked by FlyRank at CREDENTIAL_VERIFY_URL.
+ * The <a> and <svg> below are FlyRank's badge markup, supplied by Lenon. They are kept as given (JSX
+ * attributes and inline styles included), so the badge matches what FlyRank issues. The link opens
+ * FlyRank's verifier, which confirms the credential independently of this site.
  */
 
 export const CREDENTIAL_ID = 'FR-D11-7F2E2-34A8A'
 export const CREDENTIAL_VERIFY_URL = `https://internship.flyrank.ai/verify?id=${CREDENTIAL_ID}&first_name=Lenon`
 
-const INK = '#051F21'
-const MINT = '#54E399'
-const MINT_SOFT = '#BDF5DA'
-const SANS = "Inter, 'Segoe UI', system-ui, sans-serif"
-const MONO = "'JetBrains Mono', ui-monospace, monospace"
-
 export default function FlyRankBadge() {
   return (
-    <svg
-      width="164"
-      height="164"
-      viewBox="0 0 164 164"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      focusable="false"
-      className="flyrank-badge"
+    <a
+      href="https://internship.flyrank.ai/verify?id=FR-D11-7F2E2-34A8A&first_name=Lenon"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Verify Lenon Adriano's FlyRank AI Internship credential FR-D11-7F2E2-34A8A"
+      style={{
+        boxSizing: "border-box",
+        margin: "0",
+        padding: "0",
+        border: "0",
+        background: "none",
+        textDecoration: "none",
+        fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif",
+        fontStyle: "normal",
+        lineHeight: "1.25",
+        textTransform: "none",
+        float: "none",
+        WebkitFontSmoothing: "antialiased",
+        display: "inline-block",
+        width: "164px",
+        height: "164px"
+      }}
     >
-      <circle cx="82" cy="82" r="80" fill={INK} stroke={MINT} strokeWidth="2.5" />
-      <circle cx="82" cy="82" r="71" fill="none" stroke={MINT} strokeWidth="1" strokeOpacity="0.45" strokeDasharray="3 4" />
-
-      <text x="82" y="38" textAnchor="middle" fontFamily={SANS} fontSize="9.5" fontWeight="700" letterSpacing="1.6" fill={MINT}>
-        FLYRANK
-      </text>
-      <text x="82" y="50" textAnchor="middle" fontFamily={SANS} fontSize="7.5" fontWeight="600" letterSpacing="1.2" fill={MINT_SOFT}>
-        AI INTERNSHIP
-      </text>
-
-      {/* The check mark: a ring with a tick, centred above "VERIFIED". */}
-      <circle cx="82" cy="70" r="9" fill="none" stroke={MINT} strokeWidth="2" />
-      <path d="M77.5 70.2 L80.8 73.4 L86.8 66.8" fill="none" stroke={MINT} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-
-      <text x="82" y="96" textAnchor="middle" fontFamily={SANS} fontSize="15" fontWeight="800" letterSpacing="2" fill={MINT}>
-        VERIFIED
-      </text>
-      <text x="82" y="110" textAnchor="middle" fontFamily={SANS} fontSize="8" fontWeight="600" fill={MINT_SOFT}>
-        Front-end AI Engineering
-      </text>
-      <text x="82" y="123" textAnchor="middle" fontFamily={SANS} fontSize="7.5" fontWeight="700" letterSpacing="1.4" fill={MINT}>
-        JULY 2026 COHORT
-      </text>
-      <text x="82" y="137" textAnchor="middle" fontFamily={MONO} fontSize="6.6" fontWeight="500" letterSpacing="0.3" fill={MINT_SOFT}>
-        {CREDENTIAL_ID}
-      </text>
-    </svg>
+      <svg
+        width="164"
+        height="164"
+        viewBox="0 0 164 164"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{
+          display: "block",
+          opacity: "1",
+          transform: "none",
+          maxWidth: "none"
+        }}
+      >
+        <circle cx="82" cy="82" r="81" fill="#051F21" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
+        <circle cx="82" cy="82" r="65" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
+        <path id="fr-fr-d11-7f2e2-34a8a-top" d="M12.4 82A69.6 69.6 0 0 1 151.6 82" fill="none" />
+        <path id="fr-fr-d11-7f2e2-34a8a-btm" d="M5.6 82A76.4 76.4 0 0 0 158.4 82" fill="none" />
+        <text fontFamily="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" fontSize="9" fontWeight="700" letterSpacing="1.9" fill="rgba(255,255,255,0.55)">
+          <textPath href="#fr-fr-d11-7f2e2-34a8a-top" startOffset="50%" textAnchor="middle">FLYRANK AI INTERNSHIP</textPath>
+        </text>
+        <text fontFamily="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" fontSize="9" fontWeight="700" letterSpacing="1.6" fill="#54E399">
+          <textPath href="#fr-fr-d11-7f2e2-34a8a-btm" startOffset="50%" textAnchor="middle">FR-D11-7F2E2-34A8A</textPath>
+        </text>
+        <svg
+          x="68"
+          y="48"
+          width="28"
+          height="38"
+          viewBox="26 18 44 60"
+          fill="none"
+          style={{
+            opacity: "1",
+            transform: "none"
+          }}
+        >
+          <path d="M28.2354 74.2202V67.9039C29.6419 68.4369 31.3724 68.7055 33.4311 68.7055C35.3235 68.7055 36.8153 68.2396 37.8979 67.3079C38.9805 66.3762 39.9566 64.8695 40.8218 62.792L42.6887 58.3139L29.8976 29.2879C35.0038 29.2879 39.6028 32.3307 41.5294 36.9893L47.0746 50.3985L56.0126 28.6038C57.9221 23.9452 62.5168 20.894 67.6187 20.894L50.0795 63.5936C48.4556 67.5933 46.5205 70.5102 44.2743 72.3484C42.0281 74.1867 39.1169 75.1058 35.5451 75.1058C32.6212 75.1058 30.1875 74.812 28.2354 74.2244V74.2202Z" fill="#54E399" />
+        </svg>
+        <text x="82" y="103" textAnchor="middle" fontFamily="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" fontSize="13" fontWeight="600" fill="#FFFFFF">Verified</text>
+        <text x="82" y="117" textAnchor="middle" fontFamily="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" fontSize="9.5" fill="rgba(255,255,255,0.55)">Front-end AI Engineering</text>
+      </svg>
+    </a>
   )
 }
