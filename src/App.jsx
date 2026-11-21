@@ -7,6 +7,7 @@ import CapstoneAndProjects from './components/CapstoneAndProjects'
 import Skills from './components/Skills'
 import Testimonials from './components/Testimonials'
 import Contact from './components/Contact'
+import Footer from './components/Footer'
 import { useTheme } from './hooks/useTheme'
 import { useHashScrollOnLoad } from './hooks/useHashScrollOnLoad'
 
@@ -59,12 +60,7 @@ function App() {
           <Contact />
         </main>
 
-        <footer className="site-footer">
-          <div className="section footer-inner">
-            <span>© 2026 | Lenon Adriano</span>
-            <span>Built with React and Tailwind CSS</span>
-          </div>
-        </footer>
+        <Footer theme={theme} />
       </div>
     </div>
   )

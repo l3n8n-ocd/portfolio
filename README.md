@@ -42,11 +42,23 @@ The site was tested against bad input, double-submits, a blocked or silent form 
 
 The site was tested at 320–1280 px in both themes: no sideways scroll, every tap target at least 44×44 px, 16 px form inputs, AA/AAA text contrast, and WebP images sized per screen. Before/after screenshots and the full fix log are in [`docs/OPEN_IT_ON_YOUR_PHONE.md`](docs/OPEN_IT_ON_YOUR_PHONE.md).
 
+## Plant your flag: credential and analytics
+
+- **Credential:** the footer's FlyRank AI Internship badge links to FlyRank's verifier,
+  [`FR-D11-7F2E2-34A8A`](https://internship.flyrank.ai/verify?id=FR-D11-7F2E2-34A8A&first_name=Lenon). On 2026-11-21 it
+  confirmed: Lenon Adriano, Front-end AI Engineering, July 2026 cohort.
+- **Analytics:** cookie-free GoatCounter, plus a footer readout of what the browser can check (script state, 0 cookies,
+  HTTPS) and visit counts kept on this device only. **TODO:** create the GoatCounter site `lenonadriano` so hits are
+  recorded.
+- **HTTPS:** TLS 1.3, an SVG favicon, the canonical URL, Open Graph tags and a 375×812 check.
+
+Details and screenshots: [`docs/PLANT_YOUR_FLAG.md`](docs/PLANT_YOUR_FLAG.md).
+
 ## Deployed file map
 
 | File | Purpose |
 | --- | --- |
-| `index.html` | HTML shell: title, description, canonical, Open Graph / Twitter Card tags, JSON-LD `Person` |
+| `index.html` | HTML shell: title, description, canonical, Open Graph / Twitter Card tags, JSON-LD `Person`, SVG favicon, the cookie-free GoatCounter script |
 | `src/main.jsx` | React entry point |
 | `src/App.jsx` | Page layout |
 | `src/hooks/useTheme.ts` | Dark/light theme, remembered in `localStorage` when the browser allows it |
@@ -63,6 +75,9 @@ The site was tested at 320–1280 px in both themes: no sideways scroll, every t
 | `src/components/Skills.jsx` | Skills section |
 | `src/components/Testimonials.jsx` | Testimonials |
 | `src/components/Contact.jsx` | Contact section copy; mounts the dispatch form |
+| `src/components/Footer.tsx` | Footer: the FlyRank credential badge (verify link), the analytics readout and credits |
+| `src/components/FlyRankBadge.tsx` | The 164×164 FlyRank AI Internship badge as inline SVG, plus the credential ID and verify URL |
+| `src/components/AnalyticsBeacon.tsx` | Privacy-safe analytics readout: GoatCounter state, cookie count, HTTPS, and on-device visit counts |
 | `src/components/ContactDispatchForm.tsx` | **Live contact form:** validation, honeypot spam trap, double-submit lock, HTTPS `POST` to FormSubmit.co / Web3Forms, success message |
 | `src/assets/` | Original project diagrams and photos |
 | `src/assets/optimized/` | WebP versions sized for display (these are what the site loads) |
@@ -70,6 +85,7 @@ The site was tested at 320–1280 px in both themes: no sideways scroll, every t
 | `docs/MAKE_IT_DO_SOMETHING.md` | Explainer for the contact form (FlyRank "Make It Do Something") |
 | `docs/BREAK_YOUR_OWN_SITE.md` | Break-it audit: edge cases, fixes, known limitations, speed and SEO, evidence in `docs/assets/hardening-audit/` (FlyRank "Break Your Own Site") |
 | `docs/SURVIVE_THE_CRIT.md` | Peer review, Must-Fix/Nice-to-Have sort and fixes, screenshots in `docs/assets/crit-audit/` (FlyRank "Survive the Crit") |
+| `docs/PLANT_YOUR_FLAG.md` | Domain, HTTPS, badge and analytics checks, with screenshots in `docs/assets/launch-audit/` (FlyRank "Plant Your Flag") |
 | `docs/OPEN_IT_ON_YOUR_PHONE.md` | Mobile fix log with before/after screenshots in `docs/assets/mobile-audit/` (FlyRank "Open It on Your Phone") |
 | `CLAUDE.md` | Build context for Claude: case study location and shape, Voice Card, theme tokens, the 6-line next-case prompt |
 | `docs/FL-CAP_KEEP_THE_HABIT.md` | Runbook for adding the next case, Case 04 (SentinelScout) drafted, reminder details (FlyRank "Keep the Habit") |

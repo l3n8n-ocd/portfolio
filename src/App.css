@@ -1954,3 +1954,156 @@ a {
     gap: 8px;
   }
 }
+
+/*
+ * Plant Your Flag: the FlyRank credential and the privacy-safe analytics readout in the footer.
+ * The badge keeps its own #051F21 / #54E399 colours (it is the credential's artwork); everything
+ * around it uses the theme tokens, so it reads in dark and light.
+ */
+.footer-credential {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px 32px;
+  padding: 26px 0 8px;
+}
+
+.credential-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  color: var(--text);
+  text-decoration: none;
+  border-radius: 14px;
+  padding: 6px;
+}
+
+.credential-link:focus-visible {
+  outline: 2px solid var(--emerald-text);
+  outline-offset: 4px;
+}
+
+.flyrank-badge {
+  flex: none;
+  width: 164px;
+  height: 164px;
+  border-radius: 50%;
+  box-shadow: 0 10px 28px rgba(5, 31, 33, 0.45);
+}
+
+.credential-caption {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.credential-title {
+  color: var(--text);
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.credential-id code {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  color: var(--text);
+}
+
+.credential-verify {
+  margin-top: 6px;
+  width: fit-content;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 14px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--emerald-text);
+  font-weight: 600;
+}
+
+.credential-link:hover .credential-verify {
+  border-color: var(--emerald-text);
+}
+
+.telemetry-bar {
+  flex: 1 1 320px;
+  max-width: 520px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.telemetry-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px;
+  color: var(--text);
+}
+
+.telemetry-dot {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--muted);
+}
+
+.telemetry-dot--loaded {
+  background: var(--emerald);
+}
+
+.telemetry-grid {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+}
+
+.telemetry-grid div {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 8px;
+}
+
+.telemetry-grid dt {
+  color: var(--muted);
+}
+
+.telemetry-grid dd {
+  margin: 0;
+  color: var(--text);
+}
+
+@media (max-width: 600px) {
+  .footer-credential {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .credential-link {
+    flex-direction: column;
+  }
+
+  .credential-caption {
+    align-items: center;
+  }
+
+  .telemetry-bar {
+    /* In a column, flex-basis is a height: let the box fit its text. */
+    flex: none;
+    width: 100%;
+    text-align: left;
+  }
+
+  .telemetry-grid div {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
