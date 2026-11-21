@@ -56,11 +56,13 @@ Checked on 2026-11-21. Anything not checked is marked TODO.
 | page views, section jumps, theme toggles, visits | the local counters above |
 
 **Verification** ([`flag-02-analytics-and-launch-hygiene.png`](./assets/launch-audit/flag-02-analytics-and-launch-hygiene.png)),
-read from the production build on `vite preview`:
+read from the live site:
 - the script tag is in the page;
 - `https://gc.zgo.at/count.js` answered `200`;
 - `window.goatcounter.count` is a function;
-- `document.cookie` holds 0 cookies.
+- `document.cookie` holds 0 cookies;
+- the page-view hit went to `lenonadriano.goatcounter.com/count` and got `400`, because the site does not exist
+  yet (below).
 
 In Chromium, a theme toggle moved the counter to 1, and so did a section jump.
 
@@ -94,7 +96,7 @@ not "Active": the page can check the first, but only the dashboard shows the sec
   button (CLAUDE.md §2).
 
 Proof: [`flag-01-footer-verified-badge.png`](./assets/launch-audit/flag-01-footer-verified-badge.png). It was
-captured at 1280 px and 2x; the badge measures 164×164 CSS px.
+captured on the live site at 1280 px and 2x; the badge measures 164×164 CSS px.
 
 ## 4 · Launch hygiene and the phone check
 
@@ -115,7 +117,7 @@ shows the tags and a link-preview card drawn from them.
 [`flag-03-mobile-final-check-375px.png`](./assets/launch-audit/flag-03-mobile-final-check-375px.png) shows the
 phone view.
 
-Screenshots 1 and 3 come from `vite preview`, so the footer reads `HTTP (local preview)`. The live check is §6.
+All three screenshots were taken on the live site (§6).
 
 ## 5 · Where this differs from the brief
 
@@ -129,4 +131,19 @@ Screenshots 1 and 3 come from `vite preview`, so the footer reads `HTTP (local p
 
 ## 6 · Live check after deploy
 
-TODO: filled in by the follow-up commit once GitHub Pages serves this build.
+Commit `8524e4e` deployed through "Deploy to GitHub Pages" (success) and was live about 45 s after the push. Then,
+against `https://l3n8n-ocd.github.io/portfolio/`:
+
+| Check | Result |
+| --- | --- |
+| Page | `200`, with `goatcounter-script` in the HTML |
+| `favicon.svg` | `200` |
+| Footer readout | `Analytics: GoatCounter loaded · Cookie-free (0 cookies) · HTTPS` |
+| GoatCounter requests | `200 https://gc.zgo.at/count.js`, `400 https://lenonadriano.goatcounter.com/count` (site not created yet) |
+| Badge link | `https://internship.flyrank.ai/verify?id=FR-D11-7F2E2-34A8A&first_name=Lenon`, `target="_blank"`, `rel="noopener noreferrer"`, 164×164 |
+| 375×812 | 0 px horizontal overflow |
+
+**Still open (Lenon):**
+1. Create the GoatCounter site `lenonadriano` (§2), then reload the live page and watch the dashboard.
+2. Confirm TLS 1.3 in Chrome DevTools → Security on your own machine (§1).
+3. If FlyRank gives you its own badge SVG, paste it into `FlyRankBadge.tsx` (§3).
